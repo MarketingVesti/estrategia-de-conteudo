@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estratégia de Conteúdo — Vesti</title>
+<style>
+  :root {
+    --purple: #6A52B3;
+    --purple-dark: #4A467A;
+    --purple-light: #f0edf9;
+    --purple-mid: #e0d9f5;
+    --green: #549E86;
+    --green-light: #63C19B;
+    --green-bg: #eaf5f0;
+    --green-mid: #c8e9dc;
+    --text: #1a1820;
+    --text-secondary: #5a5670;
+    --text-tertiary: #9590a8;
+    --border: rgba(106,82,179,0.12);
+    --border-strong: rgba(106,82,179,0.22);
+    --bg: #faf9fc;
+    --surface: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: var(--purple-dark);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .doc-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(99,193,155,0.12);
+  }
+
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(106,82,179,0.3);
+  }
+
+  .header-inner { position: relative; z-index: 1; max-width: 800px; }
+
+  .header-tag {
+    display: inline-block;
+    background: rgba(99,193,155,0.2);
+    color: #63C19B;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .doc-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .doc-header p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 500px;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+  .meta-value { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; }
+
+  /* LAYOUT */
+  .body-wrap { max-width: 860px; margin: 0 auto; padding: 48px 32px; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-num {
+    width: 28px; height: 28px;
+    background: var(--purple);
+    color: white;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+
+  /* DIVIDER */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* CARDS */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+
+  .card.purple { border-left: 3px solid var(--purple); }
+  .card.green { border-left: 3px solid var(--green); }
+  .card.green-light { border-left: 3px solid var(--green-light); }
+
+  .card-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .card-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+
+  .pill {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+
+  th {
+    background: var(--purple-light);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--purple-dark);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg); }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  /* NOTE BOX */
+  .note {
+    background: var(--purple-light);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px;
+    font-size: 12.5px;
+    color: var(--purple-dark);
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  .note-green {
+    background: var(--green-bg);
+    border-left: 3px solid var(--green);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px;
+    font-size: 12.5px;
+    color: #2d6b56;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  .note-amber {
+    background: #fef8ec;
+    border-left: 3px solid #e6a817;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px;
+    font-size: 12.5px;
+    color: #7a5410;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  /* FLOW */
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .flow-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+
+  .flow-step {
+    padding: 12px 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--text-tertiary);
+    z-index: 1;
+  }
+
+  .flow-step .f-label { font-size: 10px; font-weight: 700; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .flow-step .f-desc { font-size: 11px; line-height: 1.4; }
+
+  .fp{ background: var(--purple-light); border-radius: 8px 0 0 8px; }
+  .fp .f-label { color: var(--purple-dark); }
+  .fp .f-desc { color: var(--purple); }
+  .fm { background: #f0f7f4; }
+  .fm .f-label { color: #2d6b56; }
+  .fm .f-desc { color: var(--green); }
+  .fa { background: #fef8ec; }
+  .fa .f-label { color: #7a5410; }
+  .fa .f-desc { color: #e6a817; }
+  .fg { background: var(--green-bg); border-radius: 0 8px 8px 0; }
+  .fg .f-label { color: #2d6b56; }
+  .fg .f-desc { color: var(--green); }
+  .fc { background: var(--green-bg); border-radius: 0 8px 8px 0; }
+  .fc .f-label { color: #2d6b56; }
+  .fc .f-desc { color: var(--green-light); }
+
+  /* MIX BAR */
+  .mix-bar { display: flex; height: 12px; border-radius: 20px; overflow: hidden; margin: 10px 0 6px; }
+  .mix-labels { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mix-label { font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 5px; }
+  .mix-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+
+  /* CHANNEL FLOW */
+  .ch-flow { display: grid; grid-template-columns: 2fr 36px 1fr 36px 1fr; align-items: center; gap: 4px; margin-bottom: 8px; }
+  .ch-source { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; }
+  .ch-mid { background: var(--purple-light); border-radius: var(--radius-sm); padding: 8px 6px; text-align: center; font-size: 10px; color: var(--purple); font-weight: 500; line-height: 1.3; }
+  .ch-dest { border-radius: var(--radius-sm); padding: 10px 12px; text-align: center; }
+  .ch-arrow { text-align: center; font-size: 15px; color: var(--text-tertiary); }
+  .ch-source-label { font-size: 10px; color: var(--text-tertiary); margin-bottom: 2px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ch-source-title { font-size: 12px; font-weight: 600; color: var(--text); }
+  .ch-source-desc { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4; }
+  .ch-dest-wa { background: var(--green-bg); }
+  .ch-dest-label { font-size: 10px; font-weight: 700; color: #2d6b56; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ch-dest-desc { font-size: 10px; color: var(--green); line-height: 1.3; }
+
+  /* FUTURE */
+  .future-card {
+    background: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    opacity: 0.75;
+  }
+  .future-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #fef8ec;
+    color: #7a5410;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+
+  .toc-title { font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  .toc-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+
+  .toc-list li a {
+    font-size: 13px;
+    color: var(--purple);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+  }
+
+  .toc-list li a:hover { color: var(--purple-dark); }
+  .toc-num { font-size: 10px; color: var(--text-tertiary); min-width: 16px; }
+
+  @media (max-width: 640px) {
+    .body-wrap { padding: 28px 16px; }
+    .doc-header { padding: 32px 20px; }
+    .doc-header h1 { font-size: 24px; }
+    .cards-3, .cards-2 { grid-template-columns: 1fr; }
+    .flow, .flow-4 { grid-template-columns: 1fr; }
+    .flow-step:not(:last-child)::after { display: none; }
+    .ch-flow { grid-template-columns: 1fr; }
+    .toc-list { grid-template-columns: 1fr; }
+    .header-meta { flex-wrap: wrap; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div class="header-inner">
+    <div class="header-tag">Documento interno</div>
+    <h1>Estratégia de Conteúdo<br>Vesti 2026</h1>
+    <p>Guia completo de canais, pilares, funil de conteúdo e cadência operacional.</p>
+    <div class="header-meta">
+      <div class="meta-item"><span class="meta-label">Canais ativos</span><span class="meta-value">Instagram · WhatsApp · Mídia Paga · Site</span></div>
+      <div class="meta-item"><span class="meta-label">Persona</span><span class="meta-value">Ana — dona de confecção atacadista</span></div>
+      <div class="meta-item"><span class="meta-label">Versão</span><span class="meta-value">1.0 — 2026</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="toc">
+    <div class="toc-title">Índice</div>
+    <ul class="toc-list">
+      <li><a href="#persona"><span class="toc-num">01</span> Persona — A Ana</a></li>
+      <li><a href="#leads"><span class="toc-num">02</span> Perfis de lead</a></li>
+      <li><a href="#produtos"><span class="toc-num">03</span> Produtos Vesti</a></li>
+      <li><a href="#conteudo-produto"><span class="toc-num">04</span> Conteúdo por produto</a></li>
+      <li><a href="#canais"><span class="toc-num">05</span> Canais e papel no funil</a></li>
+      <li><a href="#pilares"><span class="toc-num">06</span> Pilares de conteúdo</a></li>
+      <li><a href="#instagram"><span class="toc-num">07</span> Estratégia Instagram</a></li>
+      <li><a href="#pago"><span class="toc-num">08</span> Estratégia Mídia Paga</a></li>
+      <li><a href="#whatsapp"><span class="toc-num">09</span> Estratégia WhatsApp</a></li>
+      <li><a href="#aquisicao"><span class="toc-num">10</span> Canais de aquisição</a></li>
+      <li><a href="#futuros"><span class="toc-num">11</span> Projetos futuros</a></li>
+    </ul>
+  </div>
+
+  <!-- 01 PERSONA -->
+  <div class="section" id="persona">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">Persona — A Ana</div>
+        <div class="section-sub">Quem é a pessoa que queremos alcançar</div>
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card purple">
+        <div class="card-label" style="color:var(--purple)">Perfil</div>
+        <div class="card-title">Dona de confecção atacadista</div>
+        <div class="card-desc">35–50 anos. Brasileira, coreana ou libanesa. Opera em polo de moda atacadista (Brás-SP). Em muitos casos, a marca é gerida pelo casal.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-label" style="color:var(--purple)">Operação</div>
+        <div class="card-title">Ativa, mas desorganizada</div>
+        <div class="card-desc">Faturamento relevante. Carteira de clientes construída no relacionamento. Vende concentrada no WhatsApp, sem estrutura digital.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-label" style="color:var(--purple)">Momento</div>
+        <div class="card-title">Quer escalar sem complexidade</div>
+        <div class="card-desc">Quer vender mais e entrar no digital de forma prática. Não busca tecnologia por status — quer resultado real. Desconfia de soluções complicadas.</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:14px">
+      <strong>Dor central:</strong> Depende de atendimento manual, tem pouca visibilidade dos clientes e baixa eficiência comercial — mesmo com demanda existente.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 02 PERFIS DE LEAD -->
+  <div class="section" id="leads">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Perfis de lead</div>
+        <div class="section-sub">Dois estágios de Ana com produtos e abordagens diferentes</div>
+      </div>
+    </div>
+
+    <div class="cards-2">
+      <div class="card" style="border-left:3px solid var(--green);border-radius:0 var(--radius) var(--radius) 0">
+        <div class="card-label" style="color:var(--green)">Ana Starter</div>
+        <div class="card-title">Até R$150k/mês · até 2 vendedoras</div>
+        <div class="card-desc" style="margin-bottom:12px">Operação pouco digitalizada. Forte dependência de WhatsApp manual. Pouco ou nenhum uso de sistemas.</div>
+        <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Produto relevante</div>
+        <span class="badge" style="background:var(--purple-light);color:var(--purple-dark);font-size:11px;padding:4px 10px">Plataforma · R$429/mês</span>
+        <div style="margin-top:10px;font-size:11px;color:var(--text-secondary);line-height:1.5">O Oráculo (R$2.400/mês) está fora do alcance financeiro por enquanto. Conteúdo sobre Oráculo planta semente para quando ela crescer.</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--purple);border-radius:0 var(--radius) var(--radius) 0">
+        <div class="card-label" style="color:var(--purple)">Ana Pro</div>
+        <div class="card-title">A partir de R$150k/mês · 2+ vendedoras</div>
+        <div class="card-desc" style="margin-bottom:12px">Operação mais estruturada. Usa ERP, mas raramente CRM focado em cliente. Maior volume de pedidos. Busca escala e eficiência.</div>
+        <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Produtos relevantes</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="badge" style="background:var(--purple-light);color:var(--purple-dark);font-size:11px;padding:4px 10px">Plataforma · R$1.200/mês</span>
+          <span class="badge" style="background:var(--green-bg);color:#2d6b56;font-size:11px;padding:4px 10px">Oráculo · R$2.400/mês</span>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text-secondary);line-height:1.5">Cenário atual: entra pela Plataforma, Oráculo é oferecido como cross-sell pela CS. Objetivo: trazer leads já interessados no Oráculo.</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:14px">
+      As duas Anas recebem o mesmo conteúdo no Instagram — segmentação de público é inviável neste estágio. O conteúdo de Oráculo não exclui a Starter: ela absorve como educação e pode voltar quando crescer.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 03 PRODUTOS -->
+  <div class="section" id="produtos">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Produtos Vesti</div>
+        <div class="section-sub">O que cada produto é, o que resolve e como posicionar</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px">Os 3 problemas que a Vesti resolve</div>
+      <div class="cards-3">
+        <div class="card" style="border-top:3px solid var(--purple);border-radius:0 0 var(--radius) var(--radius)">
+          <div class="card-label" style="color:var(--purple)">Problema 1</div>
+          <div class="card-title">Não vende bem no digital</div>
+          <div class="card-desc">Manda PDF, foto solta no WhatsApp, depende do vendedor explicar tudo. Venda desorganizada e limitada.</div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--purple);border-radius:0 0 var(--radius) var(--radius)">
+          <div class="card-label" style="color:var(--purple)">Problema 2</div>
+          <div class="card-title">Se perde no WhatsApp</div>
+          <div class="card-desc">Recebe muita mensagem, responde todo mundo igual, perde pedido no meio da conversa, não tem histórico.</div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--purple);border-radius:0 0 var(--radius) var(--radius)">
+          <div class="card-label" style="color:var(--purple)">Problema 3</div>
+          <div class="card-title">Não sabe priorizar quem comprar</div>
+          <div class="card-desc">Não sabe quem está pronto para comprar, quem sumiu, quem só pergunta. Perde venda por falta de inteligência comercial.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="width:10px;height:10px;background:var(--purple);border-radius:3px;flex-shrink:0"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--text)">Plataforma Vesti</div>
+        <span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">7 anos · produto maduro</span>
+      </div>
+      <div class="cards-2" style="margin-bottom:12px">
+        <div class="card">
+          <div class="card-label" style="color:var(--purple)">O que é (linguagem da Ana)</div>
+          <div class="card-desc" style="font-size:13px;line-height:1.6">Um lugar organizado onde os clientes navegam pelos produtos, montam o pedido e compram — sem depender do WhatsApp ou do vendedor explicar tudo.</div>
+        </div>
+        <div class="card">
+          <div class="card-label" style="color:var(--purple)">Resolve qual problema</div>
+          <div class="card-desc" style="font-size:13px;line-height:1.6">Acaba com o PDF, a foto solta e o pedido perdido no WhatsApp. A marca deixa de ser "manual" e vira operação estruturada.</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Funcionalidade</th><th>O que faz na prática</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Catálogo / Showroom digital</span></td><td>Produtos organizados com foto, vídeo, preço e variações — cliente navega sozinho, tira o peso do vendedor</td></tr>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Experiência de compra</span></td><td>Cliente escolhe, monta pedido e visualiza tudo organizado — próximo de um ecommerce, adaptado ao atacado</td></tr>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Venda consultiva</span></td><td>O pedido chega e o vendedor pode acrescentar peças e ser bonificado por isso — aumenta o ticket sem depender da Ana</td></tr>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">VestiPago + antifraude</span></td><td>Garante o recebimento em cada contestação, elimina golpes e aprova em média 20% a mais em vendas que outros meios de pagamento</td></tr>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Automações de pedido</span></td><td>Envio automático de fotos e vídeos do que o cliente comprou, cópia do pedido, link de rastreio e pesquisa de satisfação — tudo sem esforço manual</td></tr>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">32+ integrações com ERP</span></td><td>Estoque espelhado em tempo real e pedidos chegando automaticamente no sistema da loja — a Ana Pro não precisa abandonar o ERP que já usa</td></tr>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Cadastro de clientes</span></td><td>Base estruturada com histórico de compra — começa a sair do "tudo no WhatsApp"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+        <div style="background:var(--purple-light);border-radius:var(--radius-sm);padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:700;color:var(--purple)">R$2bi</div>
+          <div style="font-size:10px;color:var(--purple-dark);margin-top:2px">em vendas no último ano</div>
+        </div>
+        <div style="background:var(--purple-light);border-radius:var(--radius-sm);padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:700;color:var(--purple)">130k+</div>
+          <div style="font-size:10px;color:var(--purple-dark);margin-top:2px">multimarcas ativas comprando</div>
+        </div>
+        <div style="background:var(--purple-light);border-radius:var(--radius-sm);padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:700;color:var(--purple)">900+</div>
+          <div style="font-size:10px;color:var(--purple-dark);margin-top:2px">fornecedores na plataforma</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <div class="note">
+          <strong>Falar:</strong> "Um lugar organizado para seus clientes comprarem sem depender do WhatsApp"
+        </div>
+        <div class="note-amber">
+          <strong>Não falar:</strong> "plataforma de ecommerce" — soa distante da realidade da Ana
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="width:10px;height:10px;background:var(--green);border-radius:3px;flex-shrink:0"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--text)">Oráculo</div>
+        <span class="badge" style="background:var(--green-bg);color:#2d6b56">7 meses · produto novo</span>
+        <span class="badge" style="background:#fef8ec;color:#7a5410">produto principal da Vesti hoje</span>
+      </div>
+      <div class="cards-2" style="margin-bottom:12px">
+        <div class="card">
+          <div class="card-label" style="color:var(--green)">O que é (linguagem da Ana)</div>
+          <div class="card-desc" style="font-size:13px;line-height:1.6">Um sistema que organiza os clientes da Ana dentro do WhatsApp, entende o comportamento de cada um e mostra exatamente quem está pronto para comprar.</div>
+        </div>
+        <div class="card">
+          <div class="card-label" style="color:var(--green)">Resolve qual problema</div>
+          <div class="card-desc" style="font-size:13px;line-height:1.6">Acaba com o atendimento igual para todo mundo. A Ana para de perder venda por não saber priorizar e começa a vender mais com a mesma base de clientes.</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Funcionalidade</th><th>O que faz na prática</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Atendimento com IA (24h)</span></td><td>Responde clientes automaticamente, mantém conversa ativa, não deixa lead esfriar — escala o atendimento sem aumentar time</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">CRM inteligente</span></td><td>Não só armazena contato — organiza automaticamente e entende o comportamento de compra de cada cliente</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Segmentação automática (RFV)</span></td><td>Separa quem compra sempre, quem sumiu, quem só perguntou e quem está pronto para comprar agora</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Recuperação de inativos</span></td><td>Identifica clientes que pararam de comprar e aciona automaticamente — recupera receita sem esforço manual</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Carrinho abandonado</span></td><td>Detecta quando o cliente montou pedido e não finalizou — envia lembrete automático no momento certo</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Campanhas em massa no WhatsApp</span></td><td>Lançar coleção, reativar base, vender para quem já compra — segmentado, não "manda para todo mundo"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <div class="note-green">
+          <strong>Falar:</strong> "Um sistema que organiza seus clientes e te mostra exatamente quem comprar" ou "um CRM vivo dentro do seu WhatsApp"
+        </div>
+        <div class="note-amber">
+          <strong>Não falar:</strong> "CRM com IA" — a Ana Pro conhece CRM mas ainda não associa à sua dor real
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:var(--purple-light);border-radius:var(--radius);padding:18px 20px">
+      <div style="font-size:12px;font-weight:700;color:var(--purple-dark);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Como os dois se conectam — o fluxo completo</div>
+      <div class="flow-4">
+        <div class="flow-step fp"><div class="f-label">Oráculo</div><div class="f-desc">Atende e entende o cliente no WhatsApp</div></div>
+        <div class="flow-step fm"><div class="f-label">Oráculo</div><div class="f-desc">Segmenta automaticamente por comportamento</div></div>
+        <div class="flow-step fa"><div class="f-label">Oráculo</div><div class="f-desc">Direciona para o produto certo</div></div>
+        <div class="flow-step fg"><div class="f-label">Plataforma</div><div class="f-desc">Cliente compra de forma organizada</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--purple-dark);margin-top:12px;line-height:1.5">Plataforma organiza a venda. Oráculo organiza o cliente. Juntos formam uma máquina de vendas — mas são vendidos separadamente.</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 04 CONTEÚDO POR PRODUTO -->
+  <div class="section" id="conteudo-produto">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">Conteúdo por produto</div>
+        <div class="section-sub">O que falar, para quem e em qual fase</div>
+      </div>
+    </div>
+
+    <div class="note-amber" style="margin-bottom:20px">
+      <strong>Contexto:</strong> Hoje o Instagram só fala da Plataforma (7 anos de produto, fácil de entender). O Oráculo tem 7 meses, é complexo para a Ana e ainda tem poucos casos. O objetivo é construir consciência para o Oráculo gradualmente, sem abandonar a Plataforma.
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px">Proporção de conteúdo por fase</div>
+      <div class="cards-2">
+        <div class="card" style="border-top:3px solid var(--green);border-radius:0 0 var(--radius) var(--radius)">
+          <div class="card-label" style="color:var(--green)">Fase 1 — primeiros 90 dias</div>
+          <div class="card-title">Consolidar Plataforma, introduzir dor do Oráculo</div>
+          <div style="margin:10px 0 4px">
+            <div class="mix-bar">
+              <div style="width:70%;background:var(--purple)"></div>
+              <div style="width:30%;background:var(--green)"></div>
+            </div>
+            <div class="mix-labels">
+              <div class="mix-label"><div class="mix-dot" style="background:var(--purple)"></div>70% Plataforma</div>
+              <div class="mix-label"><div class="mix-dot" style="background:var(--green)"></div>30% Dor que leva ao Oráculo (sem citar produto)</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:8px;line-height:1.5">No conteúdo de Oráculo: só amplificar a dor. Não apresentar o produto ainda — a Ana Pro precisa primeiro nomear o problema.</div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--green-light);border-radius:0 0 var(--radius) var(--radius)">
+          <div class="card-label" style="color:#2d6b56">Fase 2 — após 90 dias</div>
+          <div class="card-title">Equilibrar produtos à medida que o Oráculo amadurece</div>
+          <div style="margin:10px 0 4px">
+            <div class="mix-bar">
+              <div style="width:55%;background:var(--purple)"></div>
+              <div style="width:45%;background:var(--green)"></div>
+            </div>
+            <div class="mix-labels">
+              <div class="mix-label"><div class="mix-dot" style="background:var(--purple)"></div>55% Plataforma</div>
+              <div class="mix-label"><div class="mix-dot" style="background:var(--green)"></div>45% Oráculo (produto + prova)</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:8px;line-height:1.5">Gatilho para avançar: ter pelo menos 3 casos reais publicáveis do Oráculo e a audiência já familiarizada com a dor.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Produto</th><th>Dor que o conteúdo explora</th><th>Ana-alvo</th><th>Tipo de conteúdo ideal</th><th>Posicionamento</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Plataforma</span></td>
+            <td>Vende pelo WhatsApp manual, perde pedido, sem presença digital estruturada</td>
+            <td>Starter + Pro</td>
+            <td>Educação, dica prática, prova, produto</td>
+            <td>"Um lugar organizado para seus clientes comprarem"</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Oráculo</span></td>
+            <td>Não sabe quem priorizar, responde todo mundo igual, perde venda por falta de inteligência</td>
+            <td>Pro (principal)</td>
+            <td>Dor, educação sobre CRM/segmentação, prova</td>
+            <td>"Organiza seus clientes e mostra exatamente quem comprar"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-green" style="margin-top:14px">
+      <strong>Armadilha a evitar:</strong> falar de cada produto isolado faz a Plataforma parecer commodity e o Oráculo virar "só chatbot". O poder está no fluxo integrado — mas só revelar isso quando a Ana já entende os dois separadamente.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 05 CANAIS -->
+  <div class="section" id="canais">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <div class="section-title">Canais e papel no funil</div>
+        <div class="section-sub">Como cada canal se encaixa na jornada da Ana</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th>Etapa do funil</th>
+            <th>Papel</th>
+            <th>Destino do lead</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Instagram orgânico</span></td>
+            <td>Topo + aquecimento</td>
+            <td>Atrair, gerar identificação, criar desejo, educar</td>
+            <td>WhatsApp (via bio)</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:#fef0e6;color:#a0520a">Mídia paga Meta</span></td>
+            <td>Topo + meio</td>
+            <td>Escalar alcance — Reels aquecem no perfil; carrossel e post convertem direto</td>
+            <td>Perfil IG (Reels) / WhatsApp (carrossel e post)</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--green-bg);color:#2d6b56">WhatsApp</span></td>
+            <td>Meio + fundo</td>
+            <td>Nutrir, converter, reativar base</td>
+            <td>Conversão / demo / venda</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--purple-mid);color:var(--purple-dark)">Site</span></td>
+            <td>Fundo (inbound)</td>
+            <td>Capturar Ana com alta intenção — pesquisou ativamente</td>
+            <td>WhatsApp (botão no site)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-green">
+      Todo caminho leva ao WhatsApp. O Instagram, a mídia paga e o site são pontos de entrada — é no WhatsApp que acontece a nutrição e a conversão.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 06 PILARES -->
+  <div class="section" id="pilares">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <div class="section-title">Pilares de conteúdo</div>
+        <div class="section-sub">Os 6 tipos de conteúdo e o que cada um faz pela Ana</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Pilar</th><th>Objetivo</th><th>Exemplo</th><th>Gatilho</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Dor</span></td>
+            <td>Fazer a Ana pensar "sou eu"</td>
+            <td>"Você sabe quem vai comprar hoje… ou só acha que sabe?"</td>
+            <td>Identificação</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Educação</span></td>
+            <td>Elevar o nível dela, construir autoridade</td>
+            <td>"A diferença entre cliente ativo e cliente fiel no atacado"</td>
+            <td>Aprendizado</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:#fef8ec;color:#7a5410">Dica prática</span></td>
+            <td>Gerar valor imediato e salvamento</td>
+            <td>"3 perguntas para fazer antes de lançar uma coleção"</td>
+            <td>Utilidade</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:#fef0e6;color:#a0520a">Produto</span></td>
+            <td>Apresentar a Vesti com contexto — nunca como propaganda</td>
+            <td>"Como automatizar o que você hoje faz no braço"</td>
+            <td>Solução</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:#FAECE7;color:#712B13">Prova</span></td>
+            <td>Quebrar desconfiança com caso real</td>
+            <td>"Confecção no Brás: de WhatsApp caótico a carteira organizada"</td>
+            <td>Autoridade</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:#eaf3de;color:#27500a">Conversão</span></td>
+            <td>Levar para ação clara — sempre pro WhatsApp</td>
+            <td>"Quer ver como ficaria na sua confecção? Link na bio"</td>
+            <td>Urgência / CTA</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note" style="margin-top:14px">
+      <strong>Regra de ouro:</strong> nunca começar pelo produto. A Ana precisa se identificar, confiar e ver valor antes de qualquer apresentação comercial.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 07 INSTAGRAM -->
+  <div class="section" id="instagram">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <div class="section-title">Estratégia Instagram</div>
+        <div class="section-sub">Orgânico — topo e aquecimento de funil</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Jornada da Ana no Instagram</div>
+      <div class="flow">
+        <div class="flow-step fp"><div class="f-label">Para o scroll</div><div class="f-desc">Post de dor ou insight provocador</div></div>
+        <div class="flow-step fm"><div class="f-label">Se identifica</div><div class="f-desc">Sente que "é sobre ela"</div></div>
+        <div class="flow-step fa"><div class="f-label">Consome mais</div><div class="f-desc">Salva, visita o perfil, segue</div></div>
+        <div class="flow-step fm"><div class="f-label">Confia</div><div class="f-desc">Educação + prova constroem autoridade</div></div>
+        <div class="flow-step fc"><div class="f-label">Clica na bio</div><div class="f-desc">Entra no WhatsApp aquecida</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Formato por objetivo</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Formato</th><th>Papel estratégico</th><th>Pilares ideais</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Reels</span></td><td>Alcance — descoberta por quem ainda não segue</td><td>Dor, bastidores, produto</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Carrossel</span></td><td>Educação e salvamento — quem parou quer aprender mais</td><td>Educação, dica prática, prova</td></tr>
+            <tr><td><span class="badge" style="background:#f1eff8;color:var(--purple-dark)">Post estático</span></td><td>Mensagem direta, frase de impacto</td><td>Dor, conversão, prova curta</td></tr>
+            <tr><td><span class="badge" style="background:#fef0e6;color:#a0520a">Story</span></td><td>Relacionamento com quem já segue — bastidores e CTA</td><td>Diário, leve, informal</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Cadência semanal — 5 posts</div>
+      <div class="cards">
+        <div class="card green">
+          <div class="card-label" style="color:var(--purple-dark)">Seg + Qua — Topo</div>
+          <div class="card-title">Atrair quem ainda não conhece</div>
+          <div class="pill-row">
+            <span class="pill" style="background:var(--purple-light);color:var(--purple-dark)">Reels de dor</span>
+            <span class="pill" style="background:var(--green-bg);color:#2d6b56">Carrossel educativo</span>
+          </div>
+        </div>
+        <div class="card green">
+          <div class="card-label" style="color:var(--purple-dark)">Ter + Qui — Meio</div>
+          <div class="card-title">Aprofundar com quem já parou</div>
+          <div class="pill-row">
+            <span class="pill" style="background:#fef8ec;color:#7a5410">Dica prática</span>
+            <span class="pill" style="background:#FAECE7;color:#712B13">Prova / case</span>
+          </div>
+        </div>
+        <div class="card green">
+          <div class="card-label" style="color:var(--purple-dark)">Sexta — Fundo</div>
+          <div class="card-title">Produto com contexto + CTA</div>
+          <div class="pill-row">
+            <span class="pill" style="background:#fef0e6;color:#a0520a">Produto</span>
+            <span class="pill" style="background:#eaf3de;color:#27500a">Conversão → WA</span>
+          </div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:12px">Stories são diários e independentes do feed — bastidores, enquetes e reforço de CTA. Não contam como post da cadência.</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Mix mensal</div>
+      <div class="mix-bar">
+        <div style="width:35%;background:var(--purple)"></div>
+        <div style="width:30%;background:var(--green)"></div>
+        <div style="width:15%;background:#e6a817"></div>
+        <div style="width:10%;background:#e07060"></div>
+        <div style="width:5%;background:#a0520a"></div>
+        <div style="width:5%;background:var(--green-light)"></div>
+      </div>
+      <div class="mix-labels">
+        <div class="mix-label"><div class="mix-dot" style="background:var(--purple)"></div>35% Dor</div>
+        <div class="mix-label"><div class="mix-dot" style="background:var(--green)"></div>30% Educação</div>
+        <div class="mix-label"><div class="mix-dot" style="background:#e6a817"></div>15% Dica prática</div>
+        <div class="mix-label"><div class="mix-dot" style="background:#e07060"></div>10% Prova</div>
+        <div class="mix-label"><div class="mix-dot" style="background:#a0520a"></div>5% Produto</div>
+        <div class="mix-label"><div class="mix-dot" style="background:var(--green-light)"></div>5% Conversão</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Métricas — primeiros 90 dias</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Métrica</th><th>Indica</th><th>Referência inicial</th></tr></thead>
+          <tbody>
+            <tr><td>Alcance por Reels</td><td>Descoberta — Ana nova chegando</td><td>Crescimento consistente semana a semana</td></tr>
+            <tr><td>Salvamentos</td><td>Conteúdo de valor real</td><td>Taxa acima de 2% do alcance</td></tr>
+            <tr><td>Cliques na bio</td><td>Intenção de avançar para WA</td><td>Acompanhar semanalmente</td></tr>
+            <tr><td>Novos seguidores</td><td>Crescimento de audiência qualificada</td><td>Crescimento orgânico constante</td></tr>
+            <tr><td>Taxa de engajamento</td><td>Relevância do conteúdo</td><td>Acima de 3%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 08 MÍDIA PAGA -->
+  <div class="section" id="pago">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div>
+        <div class="section-title">Estratégia Mídia Paga</div>
+        <div class="section-sub">Meta Ads — Instagram e Facebook</div>
+      </div>
+    </div>
+
+    <div class="note-amber" style="margin-bottom:20px">
+      <strong>Decisão estratégica:</strong> Reels pagos apontam para o perfil do Instagram (não direto para WhatsApp). Com 2 anos de perfil e histórico de conteúdo, o perfil já tem autoridade suficiente para convencer a Ana antes de ela ir para o WhatsApp. Garantir que os primeiros 9 posts do rebranding estejam publicados antes de ativar os anúncios de Reels.
+    </div>
+
+    <div class="table-wrap" style="margin-bottom:16px">
+      <table>
+        <thead><tr><th>Formato</th><th>Objetivo do anúncio</th><th>CTA</th><th>Pilar ideal</th><th>Público</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Reels</span></td>
+            <td>Alcance + aquecimento de audiência</td>
+            <td>Visitar perfil do Instagram</td>
+            <td>Dor / bastidores</td>
+            <td>Frio — descoberta</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Carrossel</span></td>
+            <td>Geração de lead direto</td>
+            <td>Falar no WhatsApp</td>
+            <td>Educação / dica prática</td>
+            <td>Frio a morno</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:#f1eff8;color:var(--purple-dark)">Post estático</span></td>
+            <td>Conversão direta</td>
+            <td>Falar no WhatsApp</td>
+            <td>Prova / produto</td>
+            <td>Morno — retargeting</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      O Reel pago não converte direto — ele cresce o perfil e aquece audiência que vai converter pelo orgânico ou por retargeting. É um investimento de médio prazo. Não cobrar conversão imediata desse formato.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 09 WHATSAPP -->
+  <div class="section" id="whatsapp">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div>
+        <div class="section-title">Estratégia WhatsApp</div>
+        <div class="section-sub">Meio e fundo de funil — nutrição e conversão</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Pilares e cadência</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pilar</th><th>Objetivo no WA</th><th>Exemplo de mensagem</th><th>Frequência</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Educação</span></td>
+              <td>Aprofundar o que o Instagram iniciou</td>
+              <td>"Como as confecções do Brás estão organizando a carteira de clientes em 2026"</td>
+              <td>1x/semana</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#fef8ec;color:#7a5410">Dica prática</span></td>
+              <td>Gerar valor imediato, criar hábito de leitura</td>
+              <td>"3 mensagens prontas para reativar cliente parado — pode copiar e usar agora"</td>
+              <td>1x/semana</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#fef0e6;color:#a0520a">Produto</span></td>
+              <td>Apresentar a Vesti com contexto, não como propaganda</td>
+              <td>"A confecção X reduziu 4h de atendimento por dia usando isso"</td>
+              <td>2x/mês</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#FAECE7;color:#712B13">Prova</span></td>
+              <td>Quebrar objeção, gerar confiança</td>
+              <td>"Dona de confecção em SP: 'Não sabia que era tão simples'"</td>
+              <td>2x/mês</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#eaf3de;color:#27500a">Conversão</span></td>
+              <td>Levar para ação direta</td>
+              <td>"Quer ver como ficaria na sua confecção? Só responder SIM aqui"</td>
+              <td>1x/mês</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Reativação</span></td>
+              <td>Resgatar leads frios da base</td>
+              <td>"Faz um tempo que não falamos — ainda tá organizando tudo no WhatsApp?"</td>
+              <td>1x/mês</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Cadência mensal</div>
+      <div class="cards-2">
+        <div class="card green">
+          <div class="card-label" style="color:#2d6b56">Semanas 1 e 3 — Valor puro</div>
+          <div class="card-title">Sem mencionar produto</div>
+          <div class="card-desc">Só entregar conteúdo útil. A Ana precisa confiar antes de considerar a Vesti.</div>
+          <div class="pill-row">
+            <span class="pill" style="background:var(--green-bg);color:#2d6b56">Educação</span>
+            <span class="pill" style="background:#fef8ec;color:#7a5410">Dica prática</span>
+          </div>
+        </div>
+        <div class="card purple">
+          <div class="card-label" style="color:var(--purple-dark)">Semanas 2 e 4 — Produto + prova</div>
+          <div class="card-title">Vesti com contexto</div>
+          <div class="card-desc">Apresentar a solução com case real como âncora. Nunca propaganda direta.</div>
+          <div class="pill-row">
+            <span class="pill" style="background:#fef0e6;color:#a0520a">Produto</span>
+            <span class="pill" style="background:#FAECE7;color:#712B13">Prova</span>
+          </div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:12px">A conversão acontece no fim do mês, depois de 3 semanas de aquecimento. Nunca na primeira mensagem. Frequência máxima: 2 disparos por semana para não gerar bloqueio.</div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Mix mensal — WhatsApp</div>
+      <div class="mix-bar">
+        <div style="width:30%;background:var(--green)"></div>
+        <div style="width:25%;background:#e6a817"></div>
+        <div style="width:20%;background:#a0520a"></div>
+        <div style="width:15%;background:#e07060"></div>
+        <div style="width:10%;background:var(--purple)"></div>
+      </div>
+      <div class="mix-labels">
+        <div class="mix-label"><div class="mix-dot" style="background:var(--green)"></div>30% Educação</div>
+        <div class="mix-label"><div class="mix-dot" style="background:#e6a817"></div>25% Dica prática</div>
+        <div class="mix-label"><div class="mix-dot" style="background:#a0520a"></div>20% Produto</div>
+        <div class="mix-label"><div class="mix-dot" style="background:#e07060"></div>15% Prova</div>
+        <div class="mix-label"><div class="mix-dot" style="background:var(--purple)"></div>10% Conversão + Reativação</div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Abordagem por temperatura do lead</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Origem</th><th>Temperatura</th><th>Como abordar no WA</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">Instagram orgânico</span></td><td>Quente</td><td>Continuar o assunto do post que gerou o clique</td></tr>
+            <tr><td><span class="badge" style="background:#fef8ec;color:#7a5410">Pago — Reels</span></td><td>Morno</td><td>Reforçar autoridade antes de apresentar produto</td></tr>
+            <tr><td><span class="badge" style="background:#fef0e6;color:#a0520a">Pago — Carrossel/post</span></td><td>Frio a morno</td><td>Boas-vindas + qualificação rápida</td></tr>
+            <tr><td><span class="badge" style="background:var(--green-bg);color:#2d6b56">Site</span></td><td>Quente</td><td>Ir direto — ela já sabe o que quer</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 10 AQUISIÇÃO -->
+  <div class="section" id="aquisicao">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">Canais de aquisição</div>
+        <div class="section-sub">Os 3 caminhos que levam a Ana ao WhatsApp</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div class="ch-flow">
+        <div class="ch-source">
+          <div class="ch-source-label">Canal 1 — Orgânico</div>
+          <div class="ch-source-title">Instagram (feed + stories)</div>
+          <div class="ch-source-desc">Ana descobre pelo conteúdo, segue, consome e clica na bio</div>
+        </div>
+        <div class="ch-arrow">→</div>
+        <div class="ch-mid">Link na bio</div>
+        <div class="ch-arrow">→</div>
+        <div class="ch-dest ch-dest-wa"><div class="ch-dest-label">WhatsApp</div><div class="ch-dest-desc">Lead aquecido pelo conteúdo</div></div>
+      </div>
+
+      <div class="ch-flow">
+        <div class="ch-source">
+          <div class="ch-source-label">Canal 2 — Pago</div>
+          <div class="ch-source-title">Mídia paga Meta (IG + FB)</div>
+          <div class="ch-source-desc">Reels → perfil IG para aquecer. Carrossel/post → direto pro WhatsApp</div>
+        </div>
+        <div class="ch-arrow">→</div>
+        <div class="ch-mid">Reels: perfil IG<br>Carrossel: WA</div>
+        <div class="ch-arrow">→</div>
+        <div class="ch-dest ch-dest-wa"><div class="ch-dest-label">WhatsApp</div><div class="ch-dest-desc">Lead frio ou morno</div></div>
+      </div>
+
+      <div class="ch-flow">
+        <div class="ch-source">
+          <div class="ch-source-label">Canal 3 — Inbound</div>
+          <div class="ch-source-title">Site (busca orgânica / anúncio)</div>
+          <div class="ch-source-desc">Ana pesquisa no Google ou viu anúncio, entra no site e clica no WhatsApp</div>
+        </div>
+        <div class="ch-arrow">→</div>
+        <div class="ch-mid">Botão WA no site</div>
+        <div class="ch-arrow">→</div>
+        <div class="ch-dest ch-dest-wa"><div class="ch-dest-label">WhatsApp</div><div class="ch-dest-desc">Lead de alta intenção</div></div>
+      </div>
+    </div>
+
+    <div class="note-green">
+      O WhatsApp é o único ponto de chegada de todos os canais. Isso simplifica a operação e concentra o esforço de conversão em um único lugar.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 11 PROJETOS FUTUROS -->
+  <div class="section" id="futuros">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div>
+        <div class="section-title">Projetos futuros</div>
+        <div class="section-sub">Melhorias identificadas — fora do escopo atual</div>
+      </div>
+    </div>
+
+    <div class="cards-2">
+      <div class="future-card">
+        <div class="future-tag">Projeto futuro</div>
+        <div class="card-title">Régua de abordagem por temperatura</div>
+        <div class="card-desc" style="margin-top:6px">Criar pelo menos duas entradas diferentes no WhatsApp por origem do lead — lead do site (alta intenção, abordagem direta) vs. lead de anúncio frio (boas-vindas + qualificação). Hoje todos chegam e recebem o mesmo tratamento.</div>
+      </div>
+      <div class="future-card">
+        <div class="future-tag">Projeto futuro</div>
+        <div class="card-title">Otimização do site como canal de conversão</div>
+        <div class="card-desc" style="margin-top:6px">O site hoje funciona como passagem para o WhatsApp, mas a Ana que pesquisou ativamente tem alta intenção. Revisão de copy, prova social e posicionamento do CTA para reduzir abandono antes do clique no WhatsApp.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:32px 0 16px;font-size:12px;color:var(--text-tertiary)">
+    Estratégia de Conteúdo Vesti 2026 · Documento interno · Marketing Vesti
+  </div>
+
+</div>
+</body>
+</html>
