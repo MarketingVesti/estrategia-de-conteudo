@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pautas Vesti — Maio 2026</title>
+<style>
+  :root {
+    --purple: #6A52B3;
+    --purple-dark: #4A467A;
+    --purple-light: #f0edf9;
+    --green: #549E86;
+    --green-light: #63C19B;
+    --green-bg: #eaf5f0;
+    --text: #1a1820;
+    --text-secondary: #5a5670;
+    --text-tertiary: #9590a8;
+    --border: rgba(106,82,179,0.12);
+    --border-strong: rgba(106,82,179,0.22);
+    --bg: #faf9fc;
+    --surface: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --amber: #EF9F27;
+    --amber-bg: #FAEEDA;
+    --amber-text: #633806;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+  /* SIDEBAR */
+  .sidebar{width:280px;flex-shrink:0;background:var(--purple-dark);padding:28px 20px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+  .brand{display:flex;align-items:center;gap:9px;margin-bottom:28px}
+  .brand-dot{width:30px;height:30px;background:var(--green-light);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+  .brand-name{font-size:14px;font-weight:700;color:#fff}
+  .brand-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px}
+  .s-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px}
+  .s-block{margin-bottom:22px}
+  .dist-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid rgba(255,255,255,0.06)}
+  .dist-item:last-child{border-bottom:none}
+  .dist-name{font-size:12px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:7px}
+  .dist-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+  .dist-num{font-size:12px;font-weight:600;color:rgba(255,255,255,0.45)}
+  .bar-wrap{height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-top:10px}
+  .bar-fill{height:100%;display:flex;border-radius:10px;overflow:hidden}
+  .sdiv{border:none;border-top:0.5px solid rgba(255,255,255,0.08);margin:4px 0 20px}
+  .anuncio-card{background:rgba(239,159,39,0.1);border:0.5px solid rgba(239,159,39,0.2);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:7px}
+  .anuncio-label{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(239,159,39,0.7);margin-bottom:4px}
+  .anuncio-title{font-size:11px;color:rgba(255,255,255,0.8);line-height:1.4}
+
+  /* MAIN */
+  .main{flex:1;padding:32px 36px;overflow-y:auto}
+  .main-header{margin-bottom:24px}
+  .main-header h1{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:3px}
+  .main-header p{font-size:13px;color:var(--text-tertiary)}
+
+  /* STATS */
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+  .stat{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;text-align:center}
+  .stat-n{font-size:22px;font-weight:700;color:var(--purple)}
+  .stat-l{font-size:10px;color:var(--text-tertiary);margin-top:2px}
+
+  /* LEGEND */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-sm)}
+  .leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-secondary)}
+  .leg-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+
+  /* FILTERS */
+  .filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+  .f-btn{font-size:11px;padding:5px 13px;border-radius:20px;border:0.5px solid var(--border-strong);background:none;color:var(--text-secondary);cursor:pointer;transition:all 0.12s;font-family:inherit}
+  .f-btn:hover{background:var(--purple-light)}
+  .f-btn.active{background:var(--purple);color:#fff;border-color:var(--purple);font-weight:500}
+
+  /* WEEK */
+  .week{margin-bottom:32px}
+  .week-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--border)}
+  .week-dates{background:var(--purple-light);color:var(--purple-dark);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap}
+  .week-title{font-size:13px;font-weight:600;color:var(--text)}
+  .week-sub{font-size:11px;color:var(--text-tertiary)}
+
+  /* POSTS */
+  .posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .posts-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  .posts-grid.cols-1{grid-template-columns:1fr}
+
+  .post-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 15px;transition:border-color 0.15s;display:flex;flex-direction:column}
+  .post-card:hover{border-color:var(--border-strong)}
+  .post-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .post-num{font-size:10px;font-weight:600;color:var(--text-tertiary)}
+  .post-produto{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:0.04em}
+  .post-title{font-size:12.5px;font-weight:500;color:var(--text);line-height:1.45;margin-bottom:10px;flex:1}
+  .post-insight{font-size:11px;color:var(--text-secondary);line-height:1.5;border-left:2px solid var(--border-strong);padding-left:8px;margin-bottom:10px;font-style:italic}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+  .tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;white-space:nowrap}
+  .no-results{font-size:13px;color:var(--text-tertiary);padding:32px 0;text-align:center}
+
+  @media(max-width:1050px){.posts-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:760px){body{flex-direction:column}.sidebar{width:100%;height:auto;position:static}.posts-grid,.posts-grid.cols-2{grid-template-columns:1fr}.stats-row{grid-template-columns:repeat(2,1fr)}.main{padding:20px 16px}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="brand">
+    <div class="brand-dot">Ve</div>
+    <div>
+      <div class="brand-name">Vesti</div>
+      <div class="brand-sub">Pautas · Abril–Maio 2026</div>
+    </div>
+  </div>
+
+  <div class="s-block">
+    <div class="s-label">Pilares</div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#378ADD"></div>Educação</div><div class="dist-num">3</div></div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#888780"></div>Dor</div><div class="dist-num">2</div></div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#EF9F27"></div>Dica prática</div><div class="dist-num">3</div></div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#AFA9EC"></div>Produto</div><div class="dist-num">3</div></div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#E24B4A"></div>Prova social</div><div class="dist-num">1</div></div>
+    <div class="bar-wrap"><div class="bar-fill">
+      <div style="width:30.8%;background:#378ADD"></div>
+      <div style="width:15.4%;background:#888780"></div>
+      <div style="width:23.1%;background:#EF9F27"></div>
+      <div style="width:23.1%;background:#AFA9EC"></div>
+      <div style="width:7.6%;background:#E24B4A"></div>
+    </div></div>
+  </div>
+
+  <hr class="sdiv">
+
+  <div class="s-block">
+    <div class="s-label">Produtos</div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#AFA9EC"></div>Plataforma</div><div class="dist-num">5</div></div>
+    <div class="dist-item"><div class="dist-name"><div class="dist-dot" style="background:#5DCAA5"></div>Oráculo</div><div class="dist-num">7</div></div>
+    <div class="bar-wrap"><div class="bar-fill">
+      <div style="width:46%;background:var(--purple)"></div>
+      <div style="width:54%;background:var(--green)"></div>
+    </div></div>
+  </div>
+
+  <hr class="sdiv">
+
+  <div class="s-block">
+    <div class="s-label">Anúncios sugeridos</div>
+    <div class="anuncio-card">
+      <div class="anuncio-label">Sem. 27/04 · Reels · Perfil IG</div>
+      <div class="anuncio-title">Quanto tempo sua equipe gasta atendendo cliente que não vai comprar nada hoje?</div>
+    </div>
+    <div class="anuncio-card">
+      <div class="anuncio-label">Sem. 04/05 · Carrossel · WA direto</div>
+      <div class="anuncio-title">4 sinais de que sua confecção está pronta para vender no digital</div>
+    </div>
+    <div class="anuncio-card">
+      <div class="anuncio-label">Sem. 11/05 · Carrossel · WA direto</div>
+      <div class="anuncio-title">Como separar cliente ativo de inativo no WhatsApp — e parar de mandar mensagem para todo mundo</div>
+    </div>
+    <div class="anuncio-card">
+      <div class="anuncio-label">Sem. 18/05 · Post estático · WA direto</div>
+      <div class="anuncio-title">Sua confecção em todo o Brasil — veja como funciona na prática</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="main-header">
+    <h1>Calendário de pautas — Abr/Mai 2026</h1>
+    <p>13 posts orgânicos · Instagram · Versão da equipe</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">13</div><div class="stat-l">posts no período</div></div>
+    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Plataforma</div></div>
+    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Oráculo</div></div>
+    <div class="stat"><div class="stat-n">5</div><div class="stat-l">semanas</div></div>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#888780"></div>Dor</div>
+    <div class="leg"><div class="leg-dot" style="background:#378ADD"></div>Educação</div>
+    <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div>Dica prática</div>
+    <div class="leg"><div class="leg-dot" style="background:#AFA9EC"></div>Produto</div>
+    <div class="leg"><div class="leg-dot" style="background:#E24B4A"></div>Prova social</div>
+    <div class="leg"><div class="leg-dot" style="background:#63C19B"></div>Conversão</div>
+  </div>
+
+  <div class="filters">
+    <button class="f-btn active" onclick="filter('todos',this)">Todos</button>
+    <button class="f-btn" onclick="filter('plataforma',this)">Plataforma</button>
+    <button class="f-btn" onclick="filter('oraculo',this)">Oráculo</button>
+    <button class="f-btn" onclick="filter('dor',this)">Dor</button>
+    <button class="f-btn" onclick="filter('educacao',this)">Educação</button>
+    <button class="f-btn" onclick="filter('dica',this)">Dica prática</button>
+    <button class="f-btn" onclick="filter('produto',this)">Produto</button>
+    <button class="f-btn" onclick="filter('prova',this)">Prova social</button>
+    <button class="f-btn" onclick="filter('conversao',this)">Conversão</button>
+    <button class="f-btn" onclick="filter('carrossel',this)">Carrossel</button>
+    <button class="f-btn" onclick="filter('arte',this)">Arte estática</button>
+  </div>
+
+  <div id="calendar"></div>
+</div>
+
+<script>
+const WEEKS=[
+  {id:"s1",dates:"27 à 30.04",title:"Semana 1",sub:"Construir consciência — Oráculo em foco"},
+  {id:"s2",dates:"04 à 08.05",title:"Semana 2",sub:"Dor e solução da Plataforma"},
+  {id:"s3",dates:"11 à 15.05",title:"Semana 3",sub:"Qualificar, apresentar Oráculo e educar"},
+  {id:"s4",dates:"18 à 22.05",title:"Semana 4",sub:"Plataforma em destaque — escala e organização"},
+  {id:"s5",dates:"25 à 29.05",title:"Semana 5",sub:"Fechar o mês com prova social"},
+];
+
+const POSTS=[
+  // S1
+  {week:"s1",num:1,title:"O que é o ciclo de vida do cliente no atacado de moda… e por que ignorar isso custa caro?",insight:"Introdução ao conceito de recência e frequência sem jargão. A Ana entende pela dor, não pela teoria.",pilar:"Educação",produto:"Oráculo",formato:"Carrossel",cta:"Bio → WA"},
+  {week:"s1",num:2,title:"Quantos clientes da sua carteira não compram há mais de 60 dias — e você ainda não percebeu?",insight:"Cria consciência sobre perda silenciosa de receita. Reativação como dor, não como solução ainda.",pilar:"Dor",produto:"Oráculo",formato:"Arte estática",cta:"Bio → WA"},
+
+  // S2
+  {week:"s2",num:3,title:"Sua coleção está linda no catálogo PDF. Mas o cliente abre o arquivo ou ignora?",insight:"PDF travado, foto sem preço, variação que não aparece. A venda trava antes de começar.",pilar:"Dor",produto:"Plataforma",formato:"Arte estática",cta:"Bio → WA"},
+  {week:"s2",num:4,title:"Do PDF ao catálogo digital: o que muda quando o cliente navega sozinho pelos seus produtos",insight:"Apresentação da Plataforma pela experiência do comprador. A Ana enxerga o resultado antes de entender o produto.",pilar:"Produto",produto:"Plataforma",formato:"Carrossel",cta:"Bio → WA"},
+  {week:"s2",num:5,title:"Autorizar clientes campeões a comprarem quantidades menores — por que isso aumenta a frequência?",insight:"Dica prática de gestão de carteira que gera resultado imediato sem depender de sistema.",pilar:"Dica prática",produto:"Plataforma",formato:"Arte estática",cta:"Bio → WA"},
+
+  // S3
+  {week:"s3",num:6,title:"3 perguntas para saber quem está pronto para comprar na sua carteira hoje",insight:"Qualificação de cliente na prática — funciona no braço e com sistema.",pilar:"Dica prática",produto:"Oráculo",formato:"Carrossel",cta:"Bio → WA"},
+  {week:"s3",num:7,title:"Como a Vesti transforma o WhatsApp da sua confecção em canal de vendas organizado",insight:"Apresentação do Oráculo com contexto. Fala sobre os segmentos RFV que a Vesti classifica: fiéis, campeões, inativos e novos — e a ação recomendada para cada um.",pilar:"Produto",produto:"Oráculo",formato:"Carrossel",cta:"Bio → WA"},
+  {week:"s3",num:8,title:"Não envie promoções para seus clientes antes de ver isso",insight:"Clientes fiéis e leais comprariam mesmo sem promoção — mandar desconto para eles é perder receita e ainda pagar pelo disparo no WhatsApp sem necessidade. A promoção certa vai para quem precisa de estímulo para comprar.",pilar:"Dica prática",produto:"Oráculo",formato:"Arte estática",cta:"Bio → WA"},
+  {week:"s3",num:9,title:"Recuperar um cliente é mais barato do que atrair um novo",insight:"Aquisição pago x campanha segmentada de recuperação de carrinho — mostra o custo real de não ter estratégia de retenção.",pilar:"Educação",produto:"Oráculo",formato:"Carrossel",cta:"Bio → WA"},
+
+  // S4
+  {week:"s4",num:10,title:"Como organizar seu catálogo para o cliente comprar sozinho — sem precisar da sua vendedora",insight:"Foto, vídeo, grade e preço no lugar certo. A Ana deixa de ser o catálogo ambulante da própria marca.",pilar:"Educação",produto:"Plataforma",formato:"Carrossel",cta:"Bio → WA"},
+  {week:"s4",num:11,title:"Sua confecção em todo o Brasil: já conseguiu fazer a checklist nacional de venda por aí?",insight:"Mostra que é possível vender para todo o Brasil com a Plataforma — digitalizar e escalar além do Brás.",pilar:"Produto",produto:"Plataforma",formato:"Carrossel",cta:"Bio → WA"},
+
+  // S5
+  {week:"s5",num:13,title:"A confecção X reduziu 4h de atendimento por dia — veja o que mudou na operação",insight:"Case real do Oráculo. Número concreto, contexto familiar para a Ana, sem exagero.",pilar:"Prova social",produto:"Oráculo",formato:"Carrossel",cta:"Bio → WA"},
+  {week:"s5",num:14,title:"Teste se sua marca é digital",insight:"Teste interativo simples para captar o contato do lead — CTA direto para WhatsApp com formulário ou link de diagnóstico.",pilar:"Conversão",produto:"Plataforma",formato:"Arte estática",cta:"Bio → WA"},
+];
+
+const PC={
+  "Dor":         {bg:"#F1EFE8",color:"#444441"},
+  "Educação":    {bg:"#E6F1FB",color:"#0C447C"},
+  "Dica prática":{bg:"#FAEEDA",color:"#633806"},
+  "Produto":     {bg:"#EEEDFE",color:"#3C3489"},
+  "Prova social":{bg:"#FCEBEB",color:"#A32D2D"},
+  "Conversão":   {bg:"#E1F5EE",color:"#085041"},
+};
+const PRC={
+  "Plataforma":{bg:"#EEEDFE",color:"#3C3489"},
+  "Oráculo":   {bg:"#E1F5EE",color:"#085041"},
+};
+const FC={
+  "Carrossel":    {bg:"#f0f7f4",color:"#2d6b56"},
+  "Arte estática":{bg:"#FAEEDA",color:"#633806"},
+  "Reels":        {bg:"#FBEAF0",color:"#72243E"},
+};
+
+let af='todos';
+
+function filter(f,btn){
+  af=f;
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function matches(p){
+  if(af==='todos') return true;
+  if(af==='plataforma') return p.produto==='Plataforma';
+  if(af==='oraculo') return p.produto==='Oráculo';
+  if(af==='dor') return p.pilar==='Dor';
+  if(af==='educacao') return p.pilar==='Educação';
+  if(af==='dica') return p.pilar==='Dica prática';
+  if(af==='produto') return p.pilar==='Produto';
+  if(af==='prova') return p.pilar==='Prova social';
+  if(af==='conversao') return p.pilar==='Conversão';
+  if(af==='carrossel') return p.formato==='Carrossel';
+  if(af==='arte') return p.formato==='Arte estática';
+  return true;
+}
+
+function tag(t,s){return`<span class="tag" style="background:${s.bg};color:${s.color}">${t}</span>`}
+
+function render(){
+  const cal=document.getElementById('calendar');
+  cal.innerHTML='';
+
+  WEEKS.forEach(w=>{
+    const posts=POSTS.filter(p=>p.week===w.id&&matches(p));
+    if(!posts.length) return;
+
+    const cols = posts.length===1?'cols-1':posts.length===2?'cols-2':'';
+
+    let html=`<div class="week">
+      <div class="week-header">
+        <div class="week-dates">${w.dates}</div>
+        <div>
+          <div class="week-title">${w.title}</div>
+          <div class="week-sub">${w.sub}</div>
+        </div>
+      </div>
+      <div class="posts-grid ${cols}">`;
+
+    posts.forEach(p=>{
+      const pc=PC[p.pilar]||{bg:'#F1EFE8',color:'#444441'};
+      const prc=PRC[p.produto]||{bg:'#F1EFE8',color:'#444441'};
+      const fc=FC[p.formato]||{bg:'#F1EFE8',color:'#444441'};
+      html+=`<div class="post-card">
+        <div class="post-top">
+          <div class="post-num">#${p.num}</div>
+          <span class="post-produto" style="background:${prc.bg};color:${prc.color}">${p.produto}</span>
+        </div>
+        <div class="post-title">${p.title}</div>
+        <div class="post-insight">${p.insight}</div>
+        <div class="tags">
+          ${tag(p.formato,fc)}
+          ${tag(p.pilar,pc)}
+          <span class="tag" style="background:#f5f4f0;color:#9590a8">${p.cta}</span>
+        </div>
+      </div>`;
+    });
+
+    html+=`</div></div>`;
+    cal.innerHTML+=html;
+  });
+
+  if(!cal.innerHTML) cal.innerHTML='<div class="no-results">Nenhum post para esse filtro.</div>';
+}
+
+render();
+</script>
+</body>
+</html>
