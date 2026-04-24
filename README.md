@@ -1,1 +1,1 @@
-# Estrat-gia-de-Conte-do
+# Estrategia-de-Conteudo
